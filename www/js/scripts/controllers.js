@@ -11,7 +11,7 @@ define(['angularAMD'], function (angularAMD) {
 	        todaysDate = (date.getMonth() + 1).toString() + date.getDate().toString(),
 	        currentHour = date.getHours();
 
-	    // Compare date and create localStorage if it's not existing/too old   
+	    // Compare date and create localStorage if it's not existing/too old
 	    if (typeof storageFilesDate === "undefined" || storageFilesDate < todaysDate) {
 	        // Take action when the image has loaded
 	        background.addEventListener("load", function () {
@@ -36,7 +36,7 @@ define(['angularAMD'], function (angularAMD) {
 	                localStorage.setItem("storageFiles", JSON.stringify(storageFiles));
 	            }
 	            catch (e) {
-	                console.log("Storage failed: " + e);                
+	                console.log("Storage failed: " + e);
 	            }
 	        }, false);
 
@@ -54,7 +54,7 @@ define(['angularAMD'], function (angularAMD) {
 	                	localStorage.setItem("storageFiles", JSON.stringify(storageFiles));
 		            }
 		            catch (e) {
-		                console.log("Storage failed: " + e);                
+		                console.log("Storage failed: " + e);
 		            }
 				})
 				.error(function(data, status, headers, config) {
@@ -72,8 +72,8 @@ define(['angularAMD'], function (angularAMD) {
 	    // Hourly expiring temperature values in localStorage
 	    if (typeof storageFilesHour === "undefined" || storageFilesHour < currentHour) {
             storageFiles.hour = currentHour;
-            
-			$http.get('http://api.openweathermap.org/data/2.5/weather?q=Helsinki&lang=fi')
+
+			$http.get('http://api.openweathermap.org/data/2.5/weather?q=Toronto&lang=en')
 				.success(function(data, status, headers, config) {
 					var temp = Math.round(parseInt(data.main.temp) - 273.15, 2) + "°C";
 					storageFiles.temp = temp;
@@ -83,7 +83,7 @@ define(['angularAMD'], function (angularAMD) {
 	                	localStorage.setItem("storageFiles", JSON.stringify(storageFiles));
 		            }
 		            catch (e) {
-		                console.log("Storage failed: " + e);                
+		                console.log("Storage failed: " + e);
 		            }
 				})
 				.error(function(data, status, headers, config) {
@@ -96,7 +96,7 @@ define(['angularAMD'], function (angularAMD) {
 
 		$scope.getStateOfDay = function(hours)
 		{
-			if (hours >= 6 && hours < 12) 
+			if (hours >= 6 && hours < 12)
 			{
 				return "morning";
 			} else if (hours >= 12 && hours < 14) {
@@ -108,11 +108,11 @@ define(['angularAMD'], function (angularAMD) {
 			} else {
 				return "night";
 			}
-		}
+		};
 
 		$scope.text = "Good " + $scope.getStateOfDay(moment().get('hour')) + ", today is " + moment().format('dddd DD.MM.YYYY') + ".";
 		$scope.clock = moment().format('HH:mm');
-		$interval(function () { 
+		$interval(function () {
 			var hours = moment().get('hour');
 			$scope.text = "Good " + $scope.getStateOfDay(hours) + ", today is " + moment().format('dddd DD.MM.YYYY') + ".";
 			$scope.clock = moment().format('HH:mm');
